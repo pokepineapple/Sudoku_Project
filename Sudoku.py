@@ -42,10 +42,8 @@ def number_box(matrix, row, col):
     #Skips over the Boxes that were filled diagonally
     if matrix[row][col] != 0:
         return matrix
-    
     num_list = number_list()
     rn.shuffle(num_list)
-        
     for r in np.arange(row,row+3):              
         for c in np.arange(col, col+3):  
             for number in num_list:
@@ -53,7 +51,6 @@ def number_box(matrix, row, col):
                     used_col(matrix, c, number) or 
                     used_row(matrix, r, number)) == False:
                     matrix[r][c] = number
-                    
                 if matrix[r][c] != 0:
                     break
     return matrix
@@ -76,13 +73,10 @@ def fill_dia(matrix):
 def puzzle_generate():
     puzzle = np.zeros((9,9))
     fill_dia(puzzle)
-    
     for i in np.arange(0,9,3):
         for j in np.arange(0,9,3):
             number_box(puzzle, i, j)
-    
     return puzzle
-    
     
 sudoku = puzzle_generate()
 for line in sudoku: print(line)
