@@ -10,22 +10,40 @@ game.geometry("900x550")
 
 sol = []     #Stores the solution
 sudoku = []       #Stores the base puzzle keep to keep for resets
-sudoku_edit = []  #Copies the puzzle to allow edits
+player_sudoku = []  #Copies the puzzle to allow edits
+
+#should update the button text and store value in player_sudoku
 
 #setup for 1 slot on the grid
 def display_button(xpos, ypos):
-    frame = tk.Frame(game, width=56, height=56, highlightbackground = "black", 
-                         highlightthickness = 2, bd = 0) #their units in pixels
-    button1 = tk.Button(frame, text="Clicky")
-    frame.grid_propagate(False) #disables resizing of frame
-    frame.columnconfigure(0, weight=1) #enables button to fill frame
-    frame.rowconfigure(0,weight=1) #any positive number would do the trick
-    frame.place(x = xpos, y = ypos) #put frame where the button should be
+    global player_sudoku, sudoku
+    
+    def update_text(x,y):
+        
+        
+        print("bitch")
+        
+    #note: will need to calculate matrix position for command
+    X = int((xpos - 375)/56)
+    Y = int((ypos - 25)/56)
+    
+    frame = tk.Frame(game, width=56, height=56, highlightbackground = "black", bg = "pink",
+                         highlightthickness = 2, bd = 0) 
+    #add command connecting to text_button()
+    if sudoku[X][Y] != 0:
+        button1 = tk.Button(frame, text= sudoku[X][Y]) 
+    else:
+        button1 = tk.Button(frame, text= " ")#, command= update_button(X,Y)) 
+        
+    frame.grid_propagate(False)         #disables resizing of frame
+    frame.columnconfigure(0, weight=1)  #enables button to fill frame
+    frame.rowconfigure(0,weight=1)      #any positive number would do the trick
+    frame.place(x = xpos, y = ypos)     #put frame where the button should be
     button1.grid(sticky="wens")
     
 
 def display_sudoku(level):
-    global sol, sudoku
+    global sol, sudoku, player_sudoku
     #Checks if theres a existing puzzle, and removes everything if True
     if sol != []:
         sol.clear()
@@ -33,7 +51,7 @@ def display_sudoku(level):
         
     sol = solution_generator()
     sudoku   = sudoku_generator(sol, level)
-    
+    player_sudoku = np.ndarray.tolist(np.copy(sudoku))
     # #create a loop that creates a button
     for x in range(375, 879, 56):
         for y in range(25,529, 56):
