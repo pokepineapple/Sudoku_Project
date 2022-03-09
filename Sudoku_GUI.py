@@ -12,17 +12,19 @@ sol = []     #Stores the solution
 sudoku = []       #Stores the base puzzle keep to keep for resets
 player_sudoku = []  #Copies the puzzle to allow edits
 
-#should update the button text and store value in player_sudoku
-
-#setup for 1 slot on the grid
 def display_button(xpos, ypos):
     global player_sudoku, sudoku
     
-    def update_text(x,y):
-        
-        
-        print("bitch")
-        
+    #SCREAMS
+    def update_text(button, x,y):
+        list = [" ", 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        index = (list.index(button['text'])+1)%10
+        button['text'] = list[index]
+        if list[index] == " ":
+            player_sudoku[x][y] = 0
+        else:
+            player_sudoku[x][y] = list[index]
+                
     #note: will need to calculate matrix position for command
     X = int((xpos - 375)/56)
     Y = int((ypos - 25)/56)
@@ -31,9 +33,10 @@ def display_button(xpos, ypos):
                          highlightthickness = 2, bd = 0) 
     #add command connecting to text_button()
     if sudoku[X][Y] != 0:
-        button1 = tk.Button(frame, text= sudoku[X][Y]) 
+        button1 = tk.Button(frame, text= sudoku[X][Y],font = (("Arial"),20)) 
     else:
-        button1 = tk.Button(frame, text= " ")#, command= update_button(X,Y)) 
+        button1 = tk.Button(frame, text= " ", font = (("Kristen ITC"),20)) 
+        button1.config(command= lambda: update_text(button1, X, Y))
         
     frame.grid_propagate(False)         #disables resizing of frame
     frame.columnconfigure(0, weight=1)  #enables button to fill frame
@@ -60,13 +63,9 @@ def display_sudoku(level):
 #bttn = tk.Button(button_border, text = 'Submit', fg = 'black',
 #                 bg = 'yellow',font = (("Times New Roman"),15))
 
-easy = tk.Button(game, text = "Easy", height = 2, width= 10, command = display_sudoku(1)).place(x = 50, y = 150)
-normal = tk.Button(game, text = "Normal", height = 2, width= 10, command = display_sudoku(2)).place(x = 50, y = 200)
-hard = tk.Button(game, text = "Hard", height = 2, width= 10, command = display_sudoku(3)).place(x = 50, y = 250)
-random = tk.Button(game, text = "Random", height = 2, width= 10, command = display_sudoku(4)).place(x = 50, y = 300)
-
-# center = tk.Frame(game, bg='pink', highlightbackground="blue", highlightthickness=2, 
-#                 width=504, height=504, padx=3, pady=3)
-#center.place(x = 375, y = 25)
+easy = tk.Button(game, text = "Easy", height = 2, width= 10, command = lambda: display_sudoku(1)).place(x = 50, y = 150)
+normal = tk.Button(game, text = "Normal", height = 2, width= 10, command = lambda: display_sudoku(2)).place(x = 50, y = 200)
+hard = tk.Button(game, text = "Hard", height = 2, width= 10, command = lambda: display_sudoku(3)).place(x = 50, y = 250)
+random = tk.Button(game, text = "Random", height = 2, width= 10, command = lambda: display_sudoku(4)).place(x = 50, y = 300)
 
 game.mainloop()  
