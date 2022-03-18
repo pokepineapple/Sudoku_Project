@@ -2,6 +2,7 @@ from msilib import text
 from turtle import color
 import numpy as np
 import tkinter as tk
+from tkinter import messagebox
 from Sudoku_Final import *
 
 game = tk.Tk()  
@@ -74,21 +75,27 @@ def hint_button():
     return
 
 def submit_button():
-    global sol, player_sudoku
-    if sol == player_sudoku:  #if the arrays are a match
-        return
-    else: #if they are not a match
-        return
+    global sol, player_sudoku    
+    if sol == []:
+        messagebox.showwarning("Game Error",  "Please select a game first.")
+    else:
+        if sol == player_sudoku:  #if the arrays are a match
+            messagebox.showinfo("Congrats.",  "You won the game!!!")
+        else: #if they are not a match
+            messagebox.showinfo("Oh No...",  "You made a mistake somewhere. Try Again. :(")
 
 def reset_button():
-    global button_list, player_sudoku, sudoku
-    for i in range(0,9):
-        for j in range(0,9):
-            if sudoku[i][j] == 0:
-                player_sudoku[i][j] = 0  #resets what ever number stored to 0
-                reset_butt = button_list[i][j]
-                reset_butt['text'] = " "
-                button_list[i][j] = reset_butt
+    global button_list, player_sudoku, sudoku    
+    if sudoku == []:
+        messagebox.showwarning("Game Error",  "Please select a game first.")
+    else:
+        for i in range(0,9):
+            for j in range(0,9):
+                if sudoku[i][j] == 0:
+                    player_sudoku[i][j] = 0  #resets what ever number stored to 0
+                    reset_butt = button_list[i][j]
+                    reset_butt['text'] = " "
+                    button_list[i][j] = reset_butt
     
 #bttn = tk.Button(button_border, text = 'Submit', fg = 'black',
 #                 bg = 'yellow',font = (("Times New Roman"),15))
@@ -101,6 +108,6 @@ random = tk.Button(game, text = "Random", height = 2, width= 10, command = lambd
 AI = tk.Button(game, text = "AI Solver", height = 2, width= 10).place(x = 150, y = 150)
 hint = tk.Button(game, text = "Hint", height = 2, width= 10).place(x = 150, y = 200)
 reset = tk.Button(game, text = "Reset", height = 2, width= 10,command = lambda: reset_button()).place(x = 150, y = 250)
-submit = tk.Button(game, text = "Submit", height = 2, width= 10).place(x = 150, y = 300)
+submit = tk.Button(game, text = "Submit", height = 2, width= 10, command= lambda: submit_button()).place(x = 150, y = 300)
 
 game.mainloop()  
