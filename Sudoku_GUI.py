@@ -96,6 +96,7 @@ def hint_button():
         mess = ['       Hint Used\n', 'Remaining Hints: ', str(hcounter) ]
         messagebox.showinfo("Hint", "".join(mess))        
 
+#need to check if the player found an alternative solution
 def submit_button():
     global sol, player_sudoku    
     if sol == []:

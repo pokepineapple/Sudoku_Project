@@ -55,13 +55,13 @@ def remove_number(matrix, number):
 def sudoku_generator(sol, level):
     solu = np.copy(sol)
     if level == 1:   #Easy Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(33,43)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(35,41)))
     elif level == 2: #Normal Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(44,53)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(42,51)))
     elif level == 3: #Hard Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(54,60)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(52,59)))
     elif level == 4: #Random Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(33,60)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(35,59)))
     else: #Precaution for anything odd
         return 0
 
