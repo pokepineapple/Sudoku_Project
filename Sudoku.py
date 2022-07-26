@@ -3,12 +3,14 @@ from matplotlib.style import use
 import numpy as np
 import random as rn
 
+#A failed attempt in developing the Sudoku Generator
+#Unused code
+
 #Modified to make it more simplistic/readable
 #However, the main issue lies with the problem of 
 #conflicting numbers and checking if a number 
 #needs to be used in X row or Y column would produce
-#a multitude of issues leaving a 0 beahind,
-#so this code will be left as it is
+#a multitude of issues leaving a 0 beahind
 
 def number_list():
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
