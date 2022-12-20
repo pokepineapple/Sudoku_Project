@@ -59,9 +59,9 @@ def sudoku_generator(sol, level):
     elif level == 2: #Normal Mode
         return np.ndarray.tolist(remove_number(solu, rn.randint(42,51)))
     elif level == 3: #Hard Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(52,59)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(52,60)))
     elif level == 4: #Random Mode
-        return np.ndarray.tolist(remove_number(solu, rn.randint(35,59)))
+        return np.ndarray.tolist(remove_number(solu, rn.randint(35,60)))
     else: #Precaution for anything odd
         return 0
 
