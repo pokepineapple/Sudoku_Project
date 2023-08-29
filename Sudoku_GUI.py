@@ -3,7 +3,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import messagebox
 from Sudoku_Final import *
-
+# from ai_sudoku import *
 #from PIL import Image, ImageTk
 
 game = tk.Tk()  
@@ -14,7 +14,7 @@ game['background'] = "purple"
 #game.wm_attributes("-alpha", 0.5)
 
 sol = []            #Stores the solution
-sudoku = []         #Stores the base puzzle keep to keep for resets
+sudoku = []         #Stores the original puzzle
 player_sudoku = []  #Copies the puzzle to allow edits
 hcounter = 3        #Number of hints per sudoku puzzle
 
@@ -45,7 +45,7 @@ def display_button(xpos, ypos):
         button1 = tk.Button(frame, text= sudoku[X][Y],font = (("Arial"),24), relief= tk.FLAT, bg = "lime green") 
         
         button_list[X][Y] = 0
-    else:
+    else: ##THIS LETS ME ALTER BUTTON TEXT 
         button1 = tk.Button(frame, text= " ", font = (("Kristen ITC"),24)) 
         button1.config(command= lambda: update_text(button1, X, Y))
         
@@ -96,36 +96,116 @@ def hint_button():
         mess = ['       Hint Used\n', 'Remaining Hints: ', str(hcounter) ]
         messagebox.showinfo("Hint", "".join(mess))        
 
+##NEED TO COMPLETE THIS
+def solution_check(answer):
+    temp = np.array(answer)
+    for i in range(9):
+        if np.unique(temp[i,:]).size < 9 or np.unique(temp[:,i]).size < 9:
+            print("row ", i,  " ", temp[i,:])
+            print("col", i, " ", temp[:,i])
+            return False
+
+    row, col, i = 0, 0, 0
+    while row < 9:
+        if np.unique(temp[row:row+3, col:col+3]).size < 9:
+            print("box\n", i, " ", temp[row:row+3, col:col+3], " ", row, col)
+            return False
+        col += 3
+        i +=1
+
+        if i%3 and i > 0:
+            row += 3
+            col = 0
+    return True
+
+
 #need to check if the player found an alternative solution
 def submit_button():
     global sol, player_sudoku    
     if sol == []:
-        messagebox.showwarning("Submit Error",  "Please select a game first.")
+        messagebox.showwarning("Submit Error",  "Please select a game mode first.")
     else:
-        if sol == player_sudoku:  #if the arrays are a match
+        if sol == player_sudoku or solution_check(player_sudoku) == True:  #if the arrays are a match
             messagebox.showinfo("Congrats.",  "You won the game!!!")
         else: #if they are not a match
-            messagebox.showinfo("Oh No...",  "You made a mistake somewhere. Try Again. :(")
+            messagebox.showinfo("Oh No...",  "You made a mistake somewhere. Keep Trying!")
 
 def reset_button():
     global button_list, player_sudoku, sudoku    
     if sudoku == []:
         messagebox.showwarning("Reset Error",  "Please select a game first.")
     else:
-        for i in range(0,9):
-            for j in range(0,9):
+        for i in range(9):
+            for j in range(9):
                 if sudoku[i][j] == 0:
                     player_sudoku[i][j] = 0  #resets what ever number stored to 0
                     reset_butt = button_list[i][j]
                     reset_butt['text'] = " "
+                    reset_butt['bg']   = "light gray"
                     button_list[i][j] = reset_butt
+###NEED TO COMPLETE
+def ai_button():
+    global button_list, sudoku, player_sudoku
 
-easy = tk.Button(game, text = "Easy", height = 2, width= 10, command = lambda: display_sudoku(1)).place(x = 50, y = 150)
-normal = tk.Button(game, text = "Normal", height = 2, width= 10, command = lambda: display_sudoku(2)).place(x = 50, y = 200)
-hard = tk.Button(game, text = "Hard", height = 2, width= 10, command = lambda: display_sudoku(3)).place(x = 50, y = 250)
-random = tk.Button(game, text = "Random", height = 2, width= 10, command = lambda: display_sudoku(4)).place(x = 50, y = 300)
+    if sudoku == []:
+        messagebox.showwarning("AI Error",  "Please select a game first.")
+    else:
+        solve(player_sudoku, 0, 0)
 
-AI = tk.Button(game, text = "AI Solver", height = 2, width= 10).place(x = 150, y = 150)
+def solve(sudo, row, col):
+    global button_list, player_sudoku
+    if row == 8 and col == 9:
+        player_sudoku = sudo
+        return True
+    
+    if col == 9:
+        row += 1
+        col = 0
+
+    if sudo[row][col] != 0:
+        return solve(sudo, row, col+1)
+    else:
+        for num in range(10):
+            if options(sudo, row, col, num) == True:
+
+                butt = button_list[row][col]     #updates the button_list
+                butt['text'] = num
+                butt['bg'] = 'light blue'
+                button_list[row][col] = butt
+
+                sudo[row][col] = num
+                if solve(sudo, row, col+1) == True:
+                    return True
+                else:
+                    sudo[row][col] = 0
+
+    return False
+
+def options(sudo, row, col, num):
+    for i in range(9):
+        if sudo[row][i] == num or sudo[i][col] == num:
+            return False
+
+    r = int(row/3)*3
+    c = int(col/3)*3
+
+    for i in range(3):
+        for j in range(3):
+            if sudo[r+i][c+j] == num:
+                return False
+
+    return True
+
+
+
+
+
+easy = tk.Button(game, text = "Easy", height = 2, width= 10, command = lambda: display_sudoku(0)).place(x = 50, y = 150)
+normal = tk.Button(game, text = "Normal", height = 2, width= 10, command = lambda: display_sudoku(1)).place(x = 50, y = 200)
+hard = tk.Button(game, text = "Hard", height = 2, width= 10, command = lambda: display_sudoku(2)).place(x = 50, y = 250)
+random = tk.Button(game, text = "Random", height = 2, width= 10, command = lambda: display_sudoku(3)).place(x = 50, y = 300)
+
+AI = tk.Button(game, text = "AI Solver", height = 2, width= 10, command = lambda: ai_button()).place(x = 150, y = 150)
 hint = tk.Button(game, text = "Hint", height = 2, width= 10, command = lambda: hint_button()).place(x = 150, y = 200)
 reset = tk.Button(game, text = "Reset", height = 2, width= 10,command = lambda: reset_button()).place(x = 150, y = 250)
 submit = tk.Button(game, text = "Submit", height = 2, width= 10, command= lambda: submit_button()).place(x = 150, y = 300)
