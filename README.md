@@ -2,17 +2,19 @@
 Creating a Sudoku generator and AI solver
 
 Files:
-1) Sudoku.py       - Failed attempt at produce a somplete sudoku solution due to not taking deeper look into number placement 
-2) Sudoku_Final.py - a functional sudoku puzzle/solution generator along with making difficulty levels 
-3) Sudoku_GUI.py   - a GUI for players to interact with the puzzle and contains AI's Backtracking algorithm
-4) ai_sudoku.py - original file where the backtracking algorithm was tested and worked on before moving contents to Sudoku_GUI.py due to circular import issues
+
+1) ai_sudoku.py - updated the backtracking algorithm
+2) sudoku_fin.py - restructured the previous code, sudoku_Final.py into a class
+3) Web_Display - Front-End code for web page
+4) Old_Sudo - previous sudoku project with a UI implemented in Tkinter to play Sudoku
+5) README.md
 
 In Development: 
-1) Digit Classifier Model
-2) Front-End Web Display to work on interactive Sudoku game
-3) Connect Front-End display to generative sudoku alogorithm
+1) Front-End Web Display to work on interactive Sudoku game
+2) Connect Front-End display to generative sudoku alogorithm
 
 To Do List:
-1) Develop exe file to run the program 
-2) Build a Digit Classification Model
-3) Develop a Sudoku Image Detector and convert it to the board
+1) Finalize the web design for the Sudoku game
+2) Research More into FLask API to manage communications between front-end (Web page) and back-end (Python Algorithms)
+3) Build a Digit Classification Model
+4) Develop a Sudoku Image Detector and convert it to a matrix for application use
