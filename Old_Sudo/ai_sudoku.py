@@ -1,6 +1,8 @@
-from sudoku_fin import *
-from Old_Sudo.Sudoku_GUI import button_list
-from Old_Sudo.Sudoku_Final import * #precaution
+import numpy as np
+import tkinter as tk
+from tkinter import messagebox
+from Sudoku_Final import *
+from Sudoku_GUI import solution_check, button_list
 
 
 ##BACKTRACKING ALGORITHM WORKS BUT IT NEEDS TO UPDATE THE BUTTON DISPLAY NEXT
